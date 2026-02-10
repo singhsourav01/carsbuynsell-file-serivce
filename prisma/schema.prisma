@@ -1,0 +1,37 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model files {
+  file_id             String          @id @default(uuid())
+  file_uploaded_by_id String?
+  file_upload_type    String
+  file_is_deleted     Boolean
+  file_media_type     file_media_type
+  file_url            String          @db.LongText
+  file_created_at     DateTime        @default(now())
+  file_updated_at     DateTime        @updatedAt
+  file_thumbnail_url  String?
+
+  @@index(fields: [file_id])
+}
+
+enum file_media_type {
+  image
+  video
+  audio
+  pdf
+  text
+  doc
+}
