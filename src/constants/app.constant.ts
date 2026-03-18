@@ -14,7 +14,7 @@ export const API_ENDPOINTS = {
   STAR: "*",
   VERIFY_JWT: "/verify-jwt",
   AUTH_SERVICE_BASE:
-    "http://ec2-3-13-131-116.us-east-2.compute.amazonaws.com:8090/auth",
+    "http://13.127.188.130:3001/auth",
   UPLOAD: "/upload",
   DELETE: "/delete",
   GET: "/get",

@@ -9,7 +9,7 @@ const fileController = new FileController();
 
 FileRoutes.route(API_ENDPOINTS.UPLOAD).post(
   fileMiddleWare,
-  // authUser(),
+  authUser(),
   fileController.upload
 );
 FileRoutes.route(API_ENDPOINTS.GET).get(fileController.getByIds);
