@@ -24,9 +24,6 @@ const port = parseInt(process.env.PORT || "") || PORT;
 app.use(express.json());
 app.use(cors());
 
-// Serve static files from uploads directory
-app.use("/uploads", express.static("uploads"));
-
 app.use(BASE_URL, FileRoutes);
 
 app.use(

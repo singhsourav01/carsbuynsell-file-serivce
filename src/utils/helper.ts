@@ -11,6 +11,7 @@ import {
   STRINGS,
   allowedFileTypes,
 } from "../constants/app.constant";
+import { uploadBufferToS3 } from "../configs/s3.config";
 
 export const queryHandler = async <T>(
   queryPromise: () => Promise<T>
@@ -31,24 +32,17 @@ export const getIsFileSupported = (uploadType: string, file: any) => {
 
 export const createThumbnail = async (
   typeData: any,
-  file: any,
-  uploadsDir: string
+  file: any
 ): Promise<string> => {
   return new Promise((resolve, reject) => {
     ffmpeg.setFfmpegPath(ffmpegStatic || "");
-    const relativePath = createFileUrl(
+
+    // Generate S3 key for thumbnail
+    const thumbnailKey = createS3Key(
       typeData,
       STRINGS.THUMBNAIL,
       file.newFilename + STRINGS.PNG_EXTENSION
     );
-
-    const thumbnailFullPath = path.join(uploadsDir, relativePath);
-    const thumbnailDir = path.dirname(thumbnailFullPath);
-
-    // Create directory if it doesn't exist
-    if (!fs.existsSync(thumbnailDir)) {
-      fs.mkdirSync(thumbnailDir, { recursive: true });
-    }
 
     const tempThumbnailDir = path.join(process.cwd(), STRINGS.THUMBNAIL);
     if (!fs.existsSync(tempThumbnailDir)) {
@@ -65,20 +59,26 @@ export const createThumbnail = async (
         },
         tempThumbnailDir
       )
-      .on("end", () => {
+      .on("end", async () => {
         const tempThumbnailPath = path.join(
           tempThumbnailDir,
           file.newFilename + STRINGS.PNG_EXTENSION
         );
 
-        // Move thumbnail to uploads directory
+        // Upload thumbnail to S3
         if (fs.existsSync(tempThumbnailPath)) {
-          fs.copyFileSync(tempThumbnailPath, thumbnailFullPath);
-          fs.unlinkSync(tempThumbnailPath); // Clean up temp file
+          try {
+            const thumbnailBuffer = fs.readFileSync(tempThumbnailPath);
+            await uploadBufferToS3(thumbnailBuffer, thumbnailKey, MIME_TYPES.IMAGE_PNG);
+            fs.unlinkSync(tempThumbnailPath); // Clean up temp file
+            resolve(thumbnailKey);
+          } catch (err) {
+            fs.unlinkSync(tempThumbnailPath);
+            reject(err);
+          }
+        } else {
+          reject(new Error("Thumbnail not generated"));
         }
-
-        const thumbnailUrl = `/uploads/${relativePath.replace(/\\/g, "/")}`;
-        resolve(thumbnailUrl);
       })
       .on("error", (err) => {
         reject(err);
@@ -86,7 +86,10 @@ export const createThumbnail = async (
   });
 };
 
-export const createFileUrl = (
+// S3 folder prefix - all files will be stored inside this folder
+const S3_FOLDER_PREFIX = "images";
+
+export const createS3Key = (
   typeData: any,
   mediaType: string,
   fileName: string
@@ -95,12 +98,26 @@ export const createFileUrl = (
   const key = isMultiMedia
     ? keyPrefix + STRINGS.FORWARD_SLASH + mediaType
     : keyPrefix;
-  return key + STRINGS.FORWARD_SLASH + Date.now() + STRINGS.HYPHEN + fileName;
+  return S3_FOLDER_PREFIX + STRINGS.FORWARD_SLASH + key + STRINGS.FORWARD_SLASH + Date.now() + STRINGS.HYPHEN + fileName;
+};
+
+export const createFileUrl = (
+  typeData: any,
+  mediaType: string,
+  fileName: string
+) => {
+  // Creates S3 object key with images/ prefix
+  const { keyPrefix, isMultiMedia } = typeData;
+  const key = isMultiMedia
+    ? keyPrefix + STRINGS.FORWARD_SLASH + mediaType
+    : keyPrefix;
+  return S3_FOLDER_PREFIX + STRINGS.FORWARD_SLASH + key + STRINGS.FORWARD_SLASH + Date.now() + STRINGS.HYPHEN + fileName;
 };
 
 export const getKeyFromUrl = (url: string) => {
-  return url
-    .split(STRINGS.FORWARD_SLASH)
-    .slice(INTEGERS.THREE)
-    .join(STRINGS.FORWARD_SLASH);
+  // For backwards compatibility - extracts key from old URL format or returns key as-is
+  if (url.startsWith("/uploads/")) {
+    return url.replace("/uploads/", "");
+  }
+  return url;
 };
