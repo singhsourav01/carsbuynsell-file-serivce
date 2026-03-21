@@ -1,6 +1,8 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import { ApiError, errorHandler } from "common-microservices-utils";
 import cors from "cors";
-import dotenv from "dotenv";
 import express, { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import swaggerUi from "swagger-ui-express";
@@ -13,8 +15,6 @@ import {
 } from "./constants/app.constant";
 import { apiDoc } from "./docs/api.doc";
 import FileRoutes from "./routes/file.routes";
-
-dotenv.config();
 
 
 const app = express();

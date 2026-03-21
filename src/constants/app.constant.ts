@@ -1,6 +1,6 @@
 import { file_media_type } from "@prisma/client";
 
-export const PORT = 8022;
+export const PORT = 3003;
 
 export const ROLES = {
   ADMIN: "ADMIN",
@@ -201,6 +201,6 @@ export const MAX_FILE_SIZE = 400 * 1024 * 1024; // 400 MB
 export const MAX_TOTAL_FILE_SIZE = MAX_FILE_SIZE * 10; // 4 GB (400 MB * 10)
 
 export const AUTH_SERVICE =
-  "http://ec2-3-6-195-112.ap-south-1.compute.amazonaws.com:8080/auth";
+  "http://13.127.188.130:3001/auth";
 
 export const JWKS_FOLDER = "/.well-known/jwks.json";
