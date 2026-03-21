@@ -1,7 +1,7 @@
 import { INTEGERS, STRINGS, UPLOAD_TYPES } from "../constants/app.constant";
 
 export const getTypeData = async (
-  uploadId: string,
+  uploadId: any,
   uploadType: string,
   userType: string
 ) => {

@@ -15,7 +15,7 @@ class FileService {
   upload = async (
     files: any,
     typeData: any,
-    uploadId: string,
+    uploadId: any,
     uploadType: string
   ) => {
     let resultData: Prisma.filesCreateInput[] = [];
