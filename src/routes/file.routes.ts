@@ -12,7 +12,7 @@ FileRoutes.route(API_ENDPOINTS.UPLOAD).post(
   authUser(),
   fileController.upload
 );
-FileRoutes.route(API_ENDPOINTS.GET).get(fileController.getByIds);
+FileRoutes.route(API_ENDPOINTS.GET).post(fileController.getByIds);
 FileRoutes.route(API_ENDPOINTS.GET_BY_ID).get(fileController.getById);
 FileRoutes.route(API_ENDPOINTS.DELETE).post(fileController.deleteByIds);
 FileRoutes.route(API_ENDPOINTS.DELETE_BY_ID).delete(fileController.deleteById);
