@@ -23,20 +23,20 @@ class FileController {
   }
 
   upload = asyncHandler(async (req: CustomRequest, res: Response) => {
-    const { user_id } = req.query;
+    const { id } = req.query;
     const { fields, files } = req.body;
     const { uploadType } = fields;
 
 
     const typeData = await getTypeData(
-      user_id || "user",
+      id || "user",
       uploadType,
       req.user?.userType || "user"
     );
     const uploadedFiles = await this.fileService.upload(
       files,
       typeData,
-      user_id || "",
+      id || "",
       uploadType
     );
     return res
