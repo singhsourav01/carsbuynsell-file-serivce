@@ -65,7 +65,7 @@ class FileController {
   });
 
   getByUserId = asyncHandler(async (req: Request, res: Response) => {
-    const {id} = req.query;
+    const { id } = req.query;
     const files = await this.fileService.getByUserId(id as string);
     
     if (files.length === INTEGERS.ZERO)
