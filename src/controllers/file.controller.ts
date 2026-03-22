@@ -64,6 +64,18 @@ class FileController {
       .json(new ApiResponse(StatusCodes.OK, files, API_RESPONSES.FILES_FOUND));
   });
 
+  getByUserId = asyncHandler(async (req: Request, res: Response) => {
+    const {id} = req.query;
+    const files = await this.fileService.getByUserId(id as string);
+    
+    if (files.length === INTEGERS.ZERO)
+      throw new ApiError(StatusCodes.NOT_FOUND, API_ERRORS.FILES_NOT_FOUND);
+
+    return res
+      .status(StatusCodes.OK)
+      .json(new ApiResponse(StatusCodes.OK, files, API_RESPONSES.FILES_FOUND));
+  });
+
   getById = asyncHandler(async (req: Request, res: Response) => {
     const { file_id } = req.params;
     console.log(file_id, " here is id");

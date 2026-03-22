@@ -44,6 +44,21 @@ class FileRepository {
     return await Promise.all(files.map(addSignedUrls));
   };
 
+   getByUserId = async (user_id: string) => {
+    const files = await queryHandler(
+      async () =>
+        await prisma.files.findMany({
+          where: {
+            file_uploaded_by_id: user_id,
+            file_is_deleted: false,
+          },
+        })
+    );
+
+    // Add signed URLs to each file
+    return await Promise.all(files.map(addSignedUrls));
+  };
+
   getById = async (file_id: string) => {
     console.log(file_id, "inside repository");
     const file = await queryHandler(
