@@ -23,6 +23,8 @@ class FileController {
   }
 
   upload = asyncHandler(async (req: CustomRequest, res: Response) => {
+    console.log(req.user?.user_id, " here is user id");
+    console.log(req.query.id, "here is query id");
     const { id } = req.query;
     const { fields, files } = req.body;
     const { uploadType } = fields;
