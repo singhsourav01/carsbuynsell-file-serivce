@@ -37,6 +37,17 @@ const getByFileId = {
   responses: {},
 };
 
+const getByListingId = {
+  tags: [SWAGGER_TAGS.FILES],
+  description: SWAGGER_DESCRIPTIONS.GET_FILE_INFORMATION,
+  parameters: [
+    {
+      $ref: SWAGGER_REFS.LISTING_ID_PARAMETER,
+    },
+  ],
+  responses: {},
+};
+
 const getFiles = {
   tags: [SWAGGER_TAGS.FILES],
   description: SWAGGER_DESCRIPTIONS.GET_FILE_INFORMATION,
@@ -139,14 +150,24 @@ const fileIdParameter = {
   },
 };
 
+const listingIdParameter = {
+  name: API_PARAMETERS.LISTING_ID,
+  in: PARAMETER_TYPES.QUERY,
+  required: true,
+  schema: {
+    type: RES_TYPES.STRING,
+  },
+};
+
 export const fileDocs = {
   deleteFiles,
   getFiles,
   uploadFiles,
+  getByListingId,
   getByFileId,
   deleteFileById,
 };
 
 export const fileSchemas = { uploadFilesBody, getFilesBody, deleteFilesBody };
 
-export const fileParameters = { fileIdParameter };
+export const fileParameters = { fileIdParameter, listingIdParameter };

@@ -116,6 +116,23 @@ class FileController {
       .json(new ApiResponse(StatusCodes.OK, files, API_RESPONSES.FILES_FOUND));
   });
 
+  getByListingId = asyncHandler(async (req: Request, res: Response) => {
+    const { listing_id } = req.query;
+
+    if (!listing_id) {
+      throw new ApiError(StatusCodes.BAD_REQUEST, "listing_id is required");
+    }
+
+    const files = await this.fileService.getByListingId(listing_id as string);
+
+    if (files.length === INTEGERS.ZERO)
+      throw new ApiError(StatusCodes.NOT_FOUND, API_ERRORS.FILES_NOT_FOUND);
+
+    return res
+      .status(StatusCodes.OK)
+      .json(new ApiResponse(StatusCodes.OK, files, API_RESPONSES.FILES_FOUND));
+  });
+
   getById = asyncHandler(async (req: Request, res: Response) => {
     const { file_id } = req.params;
     console.log(file_id, " here is id");

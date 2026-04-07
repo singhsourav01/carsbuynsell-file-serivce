@@ -25,6 +25,9 @@ export const apiDoc = () => {
       [SWAGGER_ROUTES.GET]: {
         post: fileDocs.getFiles,
       },
+      [SWAGGER_ROUTES.GET_BY_LISTING_ID]: {
+        get: fileDocs.getByListingId,
+      },
 
       [SWAGGER_ROUTES.GET_BY_ID]: {
         get: fileDocs.getByFileId,
@@ -45,6 +48,7 @@ export const apiDoc = () => {
       },
       parameters: {
         fileIdParameter: fileParameters.fileIdParameter,
+        listingIdParameter: fileParameters.listingIdParameter,
       },
     },
     security: [

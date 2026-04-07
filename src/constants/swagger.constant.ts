@@ -13,6 +13,7 @@ export const SWAGGER_TAGS = {
 export const SWAGGER_ROUTES = {
   UPLOAD: "/upload",
   GET: "/get",
+  GET_BY_LISTING_ID: "/get-by-listing-id",
   GET_BY_ID: "/get/{file_id}",
   DELETE: "/delete",
   DELETE_BY_ID: "/delete/{file_id}",
@@ -34,6 +35,7 @@ export const SWAGGER_REFS = {
   DELETE_FILE_BODY: "#/components/schemas/deleteFilesBody",
   GET_FILE_BODY: "#/components/schemas/getFilesBody",
   FILE_ID_PARAMETER: "#/components/parameters/fileIdParameter",
+  LISTING_ID_PARAMETER: "#/components/parameters/listingIdParameter",
 };
 export const RES_TYPES = {
   OBJECT: "object",
@@ -64,6 +66,7 @@ export const bearerAuth = {
 
 export const API_PARAMETERS = {
   FILE_ID: "file_id",
+  LISTING_ID: "listing_id",
 };
 
 export const PARAMETER_TYPES = {

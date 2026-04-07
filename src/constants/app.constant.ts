@@ -19,6 +19,7 @@ export const API_ENDPOINTS = {
   DELETE: "/delete",
   GET: "/get",
   GET_BUY_USER_ID: "/get-by-user-id",
+  GET_BY_LISTING_ID: "/get-by-listing-id",
   GET_BY_ID: "/get/:file_id",
   DELETE_BY_ID: "/delete/:file_id",
 };

@@ -125,6 +125,10 @@ class FileService {
     return await this.fileRepository.getByUserId(user_id);
   };
 
+  getByListingId = async (listing_id: string) => {
+    return await this.fileRepository.getByListingId(listing_id);
+  };
+
   deleteByIds = async (file_ids: string[]) => {
     const files = await this.fileRepository.getByIds(file_ids);
 

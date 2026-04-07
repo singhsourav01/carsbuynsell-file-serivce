@@ -19,6 +19,9 @@ FileRoutes.route("/upload-listing-files").post(
 );
 FileRoutes.route(API_ENDPOINTS.GET).post(fileController.getByIds);
 FileRoutes.route(API_ENDPOINTS.GET_BUY_USER_ID).get(fileController.getByUserId);
+FileRoutes.route(API_ENDPOINTS.GET_BY_LISTING_ID).get(
+  fileController.getByListingId
+);
 FileRoutes.route(API_ENDPOINTS.GET_BY_ID).get(fileController.getById);
 FileRoutes.route(API_ENDPOINTS.DELETE).post(fileController.deleteByIds);
 FileRoutes.route(API_ENDPOINTS.DELETE_BY_ID).delete(fileController.deleteById);

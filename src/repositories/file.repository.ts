@@ -75,6 +75,20 @@ class FileRepository {
     return await addSignedUrls(file);
   };
 
+  getByListingId = async (listing_id: string) => {
+    const files = await queryHandler(
+      async () =>
+        await prisma.files.findMany({
+          where: {
+            file_listing_id: listing_id,
+            file_is_deleted: false,
+          },
+        })
+    );
+
+    return await Promise.all(files.map(addSignedUrls));
+  };
+
   deleteMany = async (file_ids: string[]) => {
     return queryHandler(
       async () =>
