@@ -16,6 +16,7 @@ datasource db {
 model files {
   file_id             String          @id @default(uuid())
   file_uploaded_by_id String?
+  file_listing_id     String?  
   file_upload_type    String
   file_is_deleted     Boolean
   file_media_type     file_media_type
@@ -25,6 +26,8 @@ model files {
   file_thumbnail_url  String?
 
   @@index(fields: [file_id])
+  @@index([file_listing_id]) // ✅ add index
+
 }
 
 enum file_media_type {

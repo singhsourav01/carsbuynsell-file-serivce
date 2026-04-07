@@ -52,6 +52,67 @@ class FileService {
     return resultData;
   };
 
+  uploadListingFiles = async (
+  files: any,
+  typeData: any,
+  listingId: any,
+  userId: any,
+  uploadType: string
+) => {
+
+  let resultData: Prisma.filesCreateInput[] = []
+
+  const promises = files.map(async (file: any) => {
+
+    const mediaType = allMimeTypes[file.mimetype]
+
+    const s3Key = createFileUrl(
+      typeData,
+      mediaType,
+      file.originalFilename
+    )
+
+    await uploadToS3(
+      file.filepath,
+      s3Key,
+      file.mimetype
+    )
+
+    let thumbnailKey = null
+
+    if (mediaType === STRINGS.VIDEO) {
+      thumbnailKey =
+        await createThumbnail(typeData, file)
+    }
+
+    const data = {
+
+      file_uploaded_by_id: userId,   // ✅ uploader
+
+      file_listing_id: listingId,    // ✅ linked listing
+
+      file_upload_type: uploadType,
+
+      file_is_deleted: false,
+
+      file_media_type: mediaType,
+
+      file_url: s3Key,
+
+      file_thumbnail_url: thumbnailKey,
+    }
+
+    const createdFile =
+      await this.fileRepository.create(data)
+
+    resultData.push(createdFile)
+  })
+
+  await Promise.all(promises)
+
+  return resultData
+}
+
   getByIds = async (file_ids: string[]) => {
     return await this.fileRepository.getByIds(file_ids);
   };

@@ -52,6 +52,46 @@ class FileController {
       );
   });
 
+  uploadListingFiles = asyncHandler(async (req: CustomRequest, res: Response) => {
+
+  const { listing_id } = req.query
+
+  if (!listing_id) {
+    throw new ApiError(
+      StatusCodes.BAD_REQUEST,
+      "listing_id is required"
+    )
+  }
+
+  const user_id = req.user?.user_id
+
+  const { fields, files } = req.body
+  const { uploadType } = fields
+
+  const typeData = await getTypeData(
+    listing_id,
+    uploadType,
+    req.user?.userType || "user"
+  )
+
+  const uploadedFiles =
+    await this.fileService.uploadListingFiles(
+      files,
+      typeData,
+      listing_id,
+      user_id,
+      uploadType
+    )
+
+  return res.status(StatusCodes.OK).json(
+    new ApiResponse(
+      StatusCodes.OK,
+      uploadedFiles,
+      API_RESPONSES.FILE_UPLOADED
+    )
+  )
+})
+
   getByIds = asyncHandler(async (req: Request, res: Response) => {
     let file_ids = req.body.file_ids;
     const files = await this.fileService.getByIds(file_ids);

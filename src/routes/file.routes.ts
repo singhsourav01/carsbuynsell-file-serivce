@@ -12,6 +12,11 @@ FileRoutes.route(API_ENDPOINTS.UPLOAD).post(
   authUser(),
   fileController.upload
 );
+FileRoutes.route("/upload-listing-files").post(
+  fileMiddleWare,
+  authUser(),
+  fileController.uploadListingFiles
+);
 FileRoutes.route(API_ENDPOINTS.GET).post(fileController.getByIds);
 FileRoutes.route(API_ENDPOINTS.GET_BUY_USER_ID).get(fileController.getByUserId);
 FileRoutes.route(API_ENDPOINTS.GET_BY_ID).get(fileController.getById);
