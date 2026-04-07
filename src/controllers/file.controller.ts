@@ -55,6 +55,7 @@ class FileController {
   uploadListingFiles = asyncHandler(async (req: CustomRequest, res: Response) => {
 
   const { listing_id } = req.query
+  const {user_id} = req.query
 
   if (!listing_id) {
     throw new ApiError(
@@ -63,7 +64,6 @@ class FileController {
     )
   }
 
-  const user_id = req.user?.user_id
 
   const { fields, files } = req.body
   const { uploadType } = fields
