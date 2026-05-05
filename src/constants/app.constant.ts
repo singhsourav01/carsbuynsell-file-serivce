@@ -14,7 +14,7 @@ export const API_ENDPOINTS = {
   STAR: "*",
   VERIFY_JWT: "/verify-jwt",
   AUTH_SERVICE_BASE:
-    "http://13.127.188.130:3001/auth",
+    "http://65.2.10.30:3001/auth",
   UPLOAD: "/upload",
   DELETE: "/delete",
   GET: "/get",
@@ -203,6 +203,6 @@ export const MAX_FILE_SIZE = 400 * 1024 * 1024; // 400 MB
 export const MAX_TOTAL_FILE_SIZE = MAX_FILE_SIZE * 10; // 4 GB (400 MB * 10)
 
 export const AUTH_SERVICE =
-  "http://13.127.188.130:3001/auth";
+  "http://65.2.10.30:3001/auth";
 
 export const JWKS_FOLDER = "/.well-known/jwks.json";
